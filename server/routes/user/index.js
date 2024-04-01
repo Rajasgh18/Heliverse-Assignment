@@ -1,6 +1,6 @@
 const Router = require('express').Router();
 const mongoose = require('mongoose');
-const User = require('../model/User');
+const User = require('../../model/User');
 const { body, validationResult } = require('express-validator');
 
 Router
@@ -17,7 +17,7 @@ Router
             user = await User.findById(req.params.id);
             res.status(200).json(user);
         } catch (error) {
-            res.status(500).send("Internal Server Error");
+            res.status(500).send("Error in fetching user with id");
             console.e(error);
         }
     })
@@ -28,7 +28,6 @@ Router
         const page = parseInt(req.query.page);
         if (!page) return res.status(400).send("Invalid Page number");
         const pageSize = 20;
-        console.log(page)
 
         try {
             const totalCount = await User.countDocuments();
@@ -41,14 +40,14 @@ Router
                 .limit(pageSize);
 
             res.status(200).json({
-                users,
                 currentPage: page,
                 totalPages,
-                pageSize
+                pageSize,
+                users,
             })
 
         } catch (error) {
-            res.status(500).send("Internal Server Error");
+            res.status(500).send("Error in fetching user with pages");
             console.log(error);
         }
     })
@@ -78,7 +77,7 @@ Router
             res.status(200).send("User data saved successfully");
 
         } catch (error) {
-            res.status(500).send("Internal Server Error");
+            res.status(500).send("Error occured while adding user");
             console.log(error)
         }
     })
@@ -95,7 +94,7 @@ Router
             await User.findByIdAndDelete(req.params.id);
             res.status(200).send("User deleted successfully");
         } catch (error) {
-            res.status(500).send("Internal Server Error");
+            res.status(500).send("Error occured while deleting user");
             console.log(error);
         }
     })
