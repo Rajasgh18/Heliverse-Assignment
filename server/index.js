@@ -25,6 +25,6 @@ app.use("/api/users", userRoute);
 app.use("/api/team", teamRoute);
 
 // Running the Server at port 5000
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
     console.log("Server listening at http://localhost:5000");
 });
