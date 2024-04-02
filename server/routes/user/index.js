@@ -82,6 +82,34 @@ Router
         }
     })
 
+    // Update user using ID
+    .put('/:id', [
+        body('first_name', 'Please enter minimum 2 letters').optional().isLength({ min: 2 }),
+        body('last_name', 'Please enter minimum 2 letters').optional().isLength({ min: 2 }),
+        body('email', 'Please enter a valid email').optional().isEmail(),
+        body('available', 'Please enter your availability').optional().isLength({ min: 1 }),
+        body('domain', 'Please enter your domain correctly').optional().isLength({ min: 2 }),
+        body('gender', 'Please enter your gender').optional().isLength({ min: 1 }),
+    ], async (req, res) => {
+        // Checks for the specified condition if some fields are not properly filled then it sends which condition is not met
+        let errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).send("Invalid User ID format");
+
+        try {
+            const user = await User.findById(req.params.id);
+            if (!user) return res.status(404).send("There exists no user with this ID");
+
+            await User.findByIdAndUpdate(req.params.id, {$set: req.body});
+            res.status(200).send("Updated User info successfully");
+        } catch (error) {
+            res.status(500).send("Error occured while updating user");
+            console.log(error);
+        }
+    })
+
     // Delete user using ID
     .delete('/:id', async (req, res) => {
         const { id } = req.params;
