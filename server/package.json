@@ -6,7 +6,8 @@
   "author": "Raja Singh",
   "license": "MIT",
   "scripts": {
-    "start": "node --env-file=.env index.js"
+    "start": "node index.js",
+    "dev": "node --env-file=.env index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
