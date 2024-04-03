@@ -23,9 +23,21 @@ Router
             if (first_name) search.$and.push({ first_name: { $regex: new RegExp(first_name, 'i') } });
             if (last_name) search.$and.push({ last_name: { $regex: new RegExp(last_name, 'i') } });
 
-            let users = await User.find(search).skip(skip).limit(pageSize);
-            let totalUsers = await User.countDocuments(search);
+            let users;
+            let totalUsers;
+            if (first_name.length === 0) {
+                totalUsers = await User.countDocuments();
+                users = await User.find()
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize);
+            }
+            else {
+                users = await User.find(search).skip(skip).limit(pageSize);
+                totalUsers = await User.countDocuments(search);
+            }
             const totalPages = Math.ceil(totalUsers / pageSize);
+            
+            if (page < 1 || page > totalPages) return res.status(400).send("Invalid Page number");
 
             res.status(200).json({
                 currentPage: page,
