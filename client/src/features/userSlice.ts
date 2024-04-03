@@ -22,6 +22,13 @@ type InitialStateType = {
     errors: string | null;
 };
 
+type FilterUsersType = {
+    domain: string,
+    available: boolean,
+    gender: string,
+    page: number
+}
+
 const initialState: InitialStateType = {
     users: [],
     currentPage: 1,
@@ -49,6 +56,14 @@ export const searchUsers = createAsyncThunk(
     }
 );
 
+export const filterUsers = createAsyncThunk(
+    'users/filter',
+    async ({ domain, available, gender, page = 1 }: FilterUsersType) => {
+        const res = await axios.get(`${url}/users/filter?domain=${domain}&available=${available}&gender=${gender}&page=${page}`)
+        return res.data;
+    }
+)
+
 const userSlice = createSlice({
     name: 'users',
     initialState,
@@ -67,6 +82,7 @@ const userSlice = createSlice({
                 state.loading = 'Rejected';
                 state.errors = action.error.message || 'Failed to fetch users';
             }),
+
             builders.addCase(searchUsers.pending, state => {
                 state.loading = 'Pending';
             }),
@@ -79,6 +95,20 @@ const userSlice = createSlice({
             builders.addCase(searchUsers.rejected, (state, action) => {
                 state.loading = 'Rejected';
                 state.errors = action.error.message || 'Error occured while searching users';
+            })
+
+        builders.addCase(filterUsers.pending, state => {
+            state.loading = 'Pending';
+        }),
+            builders.addCase(filterUsers.fulfilled, (state, action) => {
+                state.loading = 'Fullfilled';
+                state.users = action.payload.users;
+                state.currentPage = action.payload.currentPage;
+                state.totalPages = action.payload.totalPages;
+            }),
+            builders.addCase(filterUsers.rejected, (state, action) => {
+                state.loading = 'Rejected';
+                state.errors = action.error.message || 'Error occured while filtering users';
             })
     }
 });

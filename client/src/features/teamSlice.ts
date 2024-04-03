@@ -9,19 +9,24 @@ export type TeamType = {
 };
 
 type initialStateType = {
-    teams: TeamType[];
+    team: TeamType;
     loading: 'Idle' | 'Fullfilled' | 'Pending' | 'Rejected';
     errors: string | null;
 };
 
 const initialState: initialStateType = {
-    teams: [],
+    team: { _id: "", name: "", members: [] },
     loading: 'Idle',
     errors: null
 }
 
-const fetchTeams = createAsyncThunk("teams/fetch", async () => {
-    const res = await axios.get(`${import.meta.env.VITE_API}/teams`);
+export const fetchTeam = createAsyncThunk("teams/fetch", async (id: string) => {
+    const res = await axios.get(`${import.meta.env.VITE_API}/team/${id}`);
+    return res.data;
+});
+
+export const addTeams = createAsyncThunk("teams/add", async (data: { name: string, members: UserType[] }) => {
+    const res = await axios.post(`${import.meta.env.VITE_API}/team`, data);
     return res.data;
 });
 
@@ -30,14 +35,26 @@ const teamSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: builders => {
-        builders.addCase(fetchTeams.pending, state => {
+        builders.addCase(fetchTeam.pending, state => {
             state.loading = 'Pending'
         }),
-            builders.addCase(fetchTeams.fulfilled, (state, action) => {
+            builders.addCase(fetchTeam.fulfilled, (state, action) => {
                 state.loading = 'Fullfilled',
-                    state.teams = action.payload.teams
+                    state.team = action.payload
             }),
-            builders.addCase(fetchTeams.rejected, (state, action) => {
+            builders.addCase(fetchTeam.rejected, (state, action) => {
+                state.loading = 'Rejected',
+                    state.errors = action.error.message || "Error while fetching teams"
+            }),
+
+            builders.addCase(addTeams.pending, state => {
+                state.loading = 'Pending'
+            }),
+            builders.addCase(addTeams.fulfilled, (state, action) => {
+                state.loading = 'Fullfilled',
+                    state.team = action.payload
+            }),
+            builders.addCase(addTeams.rejected, (state, action) => {
                 state.loading = 'Rejected',
                     state.errors = action.error.message || "Error while fetching teams"
             })
