@@ -27,8 +27,6 @@ Router
             let totalUsers = await User.countDocuments(search);
             const totalPages = Math.ceil(totalUsers / pageSize);
 
-            if (page > totalPages) return res.status(400).send("Invalid Page number");
-
             res.status(200).json({
                 currentPage: page,
                 totalPages,
