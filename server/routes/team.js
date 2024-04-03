@@ -69,10 +69,10 @@ Router
             }
 
             // Creating new Team
-            const team = await Team({ name, members: userIds });
-            await team.save();
+            let team = await Team({ name, members: userIds });
+            team = await team.save();
 
-            res.status(200).send("Team saved successfully");
+            res.status(200).json(team);
         } catch (error) {
             res.status(500).send("Error while adding team");
             console.log(error);
