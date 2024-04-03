@@ -15,8 +15,18 @@ Router
             const team = await Team.findById(req.params.id);
             if (!team) return res.status(404).send("No Team found");
 
+            // The below lines are not required if populate function is used
+            // but i don't know i am getting some errors so i had to manuallt fetch the users
+            const memberIds = team.members; 
+            const members = await User.find({ _id: { $in: memberIds } });
+
+            // Replace member IDs with user objects
+            team.members = members;
+
+            // Send the populated team object in the response
             res.status(200).json(team);
         } catch (error) {
+            console.log(error);
             res.status(500).send("Error while fetching teams");
         }
     })
