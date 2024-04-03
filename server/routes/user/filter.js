@@ -4,7 +4,12 @@ const User = require('../../model/User');
 Router
     .get('/', async (req, res) => {
         const { domain, gender, available } = req.query;
-        if(!domain || !gender || !available) return res.status(400).send("Please send a valid query");
+
+        const page = parseInt(req.query.page);
+        if (!page || page < 1) return res.status(400).send("Invalid Page number");
+        const pageSize = 20;
+        const skip = (page - 1) * pageSize;
+
         try {
             // adding filter parameters which is given in the query
             const filter = {};
@@ -16,10 +21,17 @@ Router
                 filter.available = available.toLowerCase();
 
             // returns data accoding to the applied filter
-            const users = await User.find(filter);
+            const users = await User.find(filter).skip(skip).limit(pageSize);
+            const totalUsers = await User.countDocuments(filter);
+
+            const totalPages = Math.ceil(totalUsers / pageSize);
+
+            if (page < 1 || page > totalPages) return res.status(400).send("Invalid Page number");
 
             res.status(200).json({
-                results: users.length,
+                currentPage: page,
+                totalPages,
+                pageSize,
                 users
             });
 
