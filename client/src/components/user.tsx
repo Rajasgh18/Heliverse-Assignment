@@ -40,7 +40,7 @@ export const User = ({
             <button
                 disabled={!unique && !isMemberOfTeam}
                 onClick={handleUpdateMember}
-                className={`absolute left-0 top-0 m-2 ${isMemberOfTeam ? "bg-red-500" : unique ? "bg-blue-500" : "bg-slate-700 cursor-not-allowed"} text-white rounded p-1 cursor-pointer`}>
+                className={`absolute left-0 top-0 m-2 ${isMemberOfTeam ? "bg-red-500 cursor-pointer" : unique ? "bg-blue-500 cursor-pointer" : "bg-slate-700 cursor-not-allowed"} text-white rounded p-1`}>
                 {isMemberOfTeam ? <LuMinus className="w-4 h-4" /> : <LuPlus className="w-4 h-4" />}
             </button>
             <img src={avatar} alt={first_name} className="h-[100px] bg-slate-200 rounded p-4 w-full object-contain" />

@@ -34,7 +34,7 @@ const Home = () => {
             <section className='flex flex-col w-full sm:p-0 p-2'>
                 <Navbar title='Users' />
                 {loading === 'Pending' && <Loader />}
-                <section className='w-full min-h-[calc(100vh-3rem)] flex flex-col sm:p-4 gap-5'>
+                <section className='w-full min-h-[calc(100vh-5rem)] flex flex-col sm:p-4 gap-5'>
                     {loading === 'Rejected' && <p>Error occurred: Failed to fetch users</p>}
                     {loading === 'Fullfilled' && users.length === 0 && <p>User not found</p>}
                     <ul className='w-full h-full flex flex-wrap gap-8 justify-center p-8'>
@@ -53,9 +53,9 @@ const Home = () => {
                         ))}
                     </ul>
                     <div className='w-full flex justify-between items-center bg-white p-2 shadow-[0_0_20px] shadow-slate-300 rounded-md'>
-                        <button onClick={() => dispatch(prevPage())} disabled={page === 1} className='p-2 px-3 rounded-md bg-blue-500 text-white'>Prev</button>
+                        <button onClick={() => dispatch(prevPage())} disabled={page === 1} className={`p-2 px-3 rounded-md bg-blue-500 text-white ${page === 1 && "bg-slate-700"}`}>Prev</button>
                         <span className='text-lg'>Page: {page} out of {data.totalPages}</span>
-                        <button onClick={() => dispatch(nextPage())} disabled={page === data.totalPages} className='p-2 px-3 rounded-md bg-blue-500 text-white'>Next</button>
+                        <button onClick={() => dispatch(nextPage())} disabled={page === data.totalPages} className={`p-2 px-3 rounded-md bg-blue-500 text-white ${page === data.totalPages && "bg-slate-700"}`}>Next</button>
                     </div>
                 </section>
             </section>
