@@ -1,30 +1,59 @@
-# React + TypeScript + Vite
+# Heliverse Assignment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+It is an Full stack application made using ReactJS with Vite and Tailwindcss for UI, also its backend is made in NodeJS, ExpressJS. It uses Mongoose for connecting with MongoDB Cluster.
 
-Currently, two official plugins are available:
+# Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Let's first setup our server
+The current directory in the terminal should be /heliverse-assignment, then change into the server directory by
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+cd server
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Install server dependencies
+
+```bash
+npm install
+```
+
+setup your .env file in the server directory
+for example the file should look like this
+
+```bash
+MONGO_DB_URL = '<MongoDB URL>'
+PORT='<port number>'
+```
+
+after that start your server by executing this command in the server directory
+
+```bash
+npm dev
+```
+
+Let's setup our client i.e. our WebApp
+change into the client directory by
+
+```bash
+cd client
+```
+
+Install client dependencies
+
+```bash
+npm install
+```
+
+setup your .env file in the client directory and in this you just have to change the port in which your server is running
+
+```bash
+VITE_API='http://localhost:<port>/api'
+```
+
+after all this setup is done then we are ready to start our webapp
+
+```bash
+npm run dev
+```
+
+The webapp will start to run on your local system on this url - http://localhost:5173/
