@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { RxCross1 } from "react-icons/rx";
 import { setShowTeambar } from "../features/teambarSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateMembers } from "../features/teambarDataSlice";
 import { addTeams } from "../features/teamSlice";
 import { LuLoader2 } from "react-icons/lu";
@@ -15,20 +15,29 @@ export const TeamBar = () => {
     const { team, loading } = data;
 
     const [name, setName] = useState("");
+    const [isSaved, setIsSaved] = useState<boolean>(false);
     const [errors, setErrors] = useState("");
     const { members } = teambarData;
 
     const dispatch = useAppDispatch();
 
-    const handleTeamSave = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleTeamSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (name.length === 0)
             return setErrors("Please fill team name");
         if (members.length < 2)
             return setErrors("Please choose atleast 2 users")
-        dispatch(addTeams({ name, members }));
-        navigate(`/team/${team._id}`);
+        await dispatch(addTeams({ name, members }));
+        setIsSaved(true);
     }
+
+    useEffect(() => {
+        if (isSaved && team._id) {
+            dispatch(updateMembers([]));
+            navigate(`/team/${team._id}`);
+        }
+    }, [isSaved]);
+
 
     const handleTeamReset = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
