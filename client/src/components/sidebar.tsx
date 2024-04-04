@@ -31,7 +31,7 @@ export const Sidebar = ({ page }: SidebarProps) => {
     };
 
     return (
-        <aside className={`w-[280px] h-screen text-slate-700 flex flex-col gap-4 sm:left-0 ${showSidebar ? "left-0" : "-left-full"} transition-all sm:sticky fixed top-0 shadow-[0_0_20px] p-3 py-5 bg-white shadow-slate-300`}>
+        <aside className={`w-[280px] z-10 h-screen text-slate-700 flex flex-col gap-4 sm:left-0 ${showSidebar ? "left-0" : "-left-full"} transition-all sm:sticky fixed top-0 shadow-[0_0_20px] p-3 py-5 bg-white shadow-slate-300`}>
             <RxCross1 onClick={() => dispatch(setShowSidebar())} className={`h-5 w-5 ml-auto sm:hidden cursor-pointer`} />
             <input type="text" placeholder="Search" value={searchName} onChange={e => setSearchName(e.target.value)} className="border border-slate-400 placeholder:text-slate-500 rounded-md p-2 px-3 focus:border-blue-500 focus:outline-none" />
             <div className="flex flex-col gap-y-2">
