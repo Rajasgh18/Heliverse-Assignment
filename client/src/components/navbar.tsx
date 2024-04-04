@@ -10,7 +10,7 @@ interface NavbarProps {
 export const Navbar = ({ title }: NavbarProps) => {
     const dispatch = useAppDispatch();
     return (
-        <nav className="h-14 shadow-[0_0_20px] shadow-slate-300 bg-white flex justify-between items-center sm:px-10 px-5">
+        <nav className="h-14 shadow-[0_0_20px] shadow-slate-300 bg-white flex justify-between items-center sm:px-10 px-5 sm:m-4 m-1 rounded-lg">
             <div className="flex items-center gap-4">
                 <HiBars3BottomLeft onClick={() => dispatch(setShowSidebar())} className="h-7 w-7 text-slate-700 sm:hidden cursor-pointer" />
                 <h2 className='text-2xl text-blue-500 font-bold'>{title}</h2>
