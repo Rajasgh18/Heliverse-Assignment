@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
 import { UserType } from "../features/userSlice";
 import { LuMinus, LuPlus } from "react-icons/lu";
-import { setTeambarData, updateMembers } from "../features/teambarDataSlice";
+import { updateMembers } from "../features/teambarDataSlice";
 import { useEffect, useState } from "react";
 
 export const User = ({
